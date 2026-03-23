@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,9 +7,17 @@
 
         <title data-i18n="title">BRouter web client</title>
 
+        <!-- Bootstrap 5.3 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- MapLibre CSS -->
+        <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+
         <!-- inject:css -->
         <link rel="stylesheet" href="dist/brouter-web.css" />
         <!-- endinject -->
+        <link rel="stylesheet" href="css/modern.css" />
     </head>
 
     <body class="flexcolumn">
@@ -17,15 +25,15 @@
             <button
                 class="navbar-toggler"
                 type="button"
-                data-toggle="collapse"
-                data-target="#collapsingNavbar"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsingNavbar"
                 aria-controls="collapsingNavbar"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
                 <span class="fa fa-bars"></span>
             </button>
-            <a class="navbar-brand order-md-last" href="#" data-toggle="modal" data-target="#about"
+            <a class="navbar-brand order-md-last" href="#" data-bs-toggle="modal" data-bs-target="#about"
                 >BRouter-Web <sup class="version">0.18.1</sup></a
             >
             <div class="collapse navbar-collapse" id="collapsingNavbar">
@@ -53,8 +61,8 @@
                     <div class="nav-item">
                         <a
                             class="nav-link"
-                            data-toggle="modal"
-                            data-target="#export"
+                            data-bs-toggle="modal"
+                            data-bs-target="#export"
                             id="exportButton"
                             href="#"
                             role="button"
@@ -71,8 +79,8 @@
                     <div class="nav-item">
                         <a
                             class="nav-link"
-                            data-toggle="modal"
-                            data-target="#share-dialog"
+                            data-bs-toggle="modal"
+                            data-bs-target="#share-dialog"
                             id="shareButton"
                             href="#"
                             role="button"
@@ -100,7 +108,7 @@
                     <div class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
-                            data-toggle="dropdown"
+                            data-bs-toggle="dropdown"
                             href="#"
                             role="button"
                             id="navbarLoadDropdown"
@@ -130,8 +138,8 @@
                                 <a
                                     class="dropdown-item"
                                     data-i18n="trackasroute.title"
-                                    data-toggle="modal"
-                                    data-target="#loadedittrack"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#loadedittrack"
                                     href="#"
                                     id="navbarLoadEditTracks"
                                     >Track as Route</a
@@ -140,8 +148,8 @@
                             <a
                                 class="dropdown-item"
                                 data-i18n="navbar.load.nogos"
-                                data-toggle="modal"
-                                data-target="#loadNogos"
+                                data-bs-toggle="modal"
+                                data-bs-target="#loadNogos"
                                 href="#"
                                 >No-go areas</a
                             >
@@ -153,10 +161,15 @@
                         data-i18n-options='{ "action": "$t(about.tooltip)", "key": "H" }'
                         title="Show more information about BRouter-Web"
                     >
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#about"
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#about"
                             ><span class="fa fa-lg fa-info-circle" aria-hidden="true"></span
                             ><span data-i18n="navbar.about">About</span></a
                         >
+                    </div>
+                    <div class="nav-item">
+                        <div id="dark-mode-toggle" class="nav-link btn btn-link" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,9 +188,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="credits.title">Credits</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <dl>
@@ -217,7 +228,7 @@
                         <dl id="credits-maps"></dl>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -238,9 +249,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="layers.customize">Customize layers</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -315,9 +324,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="about.title">About</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p data-i18n="[html]about.description">
@@ -396,8 +403,8 @@
                             type="button"
                             class="btn btn-secondary"
                             data-i18n="keyboard-shortcuts.title"
-                            data-toggle="modal"
-                            data-target="#help"
+                            data-bs-toggle="modal"
+                            data-bs-target="#help"
                         >
                             Help/Keyboard shortcuts
                         </button>
@@ -405,12 +412,12 @@
                             type="button"
                             class="btn btn-secondary"
                             data-i18n="whatsnew.title"
-                            data-toggle="modal"
-                            data-target="#whatsnew"
+                            data-bs-toggle="modal"
+                            data-bs-target="#whatsnew"
                         >
                             What's new?
                         </button>
-                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -424,9 +431,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="help.title">Help</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <h5 data-i18n="help.keyboard-shortcuts">Keyboard Shortcuts</h5>
@@ -596,7 +601,7 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -617,15 +622,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="whatsnew.title">What's new?</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <!-- will be filled automatically -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -646,9 +649,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="export.title">Export route</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="export" id="exportForm">
@@ -750,7 +751,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                         <button type="button" class="btn btn-secondary" id="serverExport">
@@ -786,9 +787,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="share.title">Share Route</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p data-i18n="share.introduction">
@@ -921,10 +920,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="trackasroute.title">Load Track as Route</h4>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="loadedittrackForm" id="loadedittrackForm">
@@ -1013,7 +1009,7 @@
                                         id="bt_manual_collapse"
                                         autocomplete="off"
                                         type="button"
-                                        data-toggle="collapse"
+                                        data-bs-toggle="collapse"
                                         href="#manual_collapse"
                                         aria-expanded="false"
                                         aria-controls="manual_collapse"
@@ -1022,7 +1018,7 @@
                                         Tuning
                                     </button>
                                 </div>
-                                <div id="manual_collapse" class="collapse" data-toggle="false">
+                                <div id="manual_collapse" class="collapse" data-bs-toggle="false">
                                     <div class="form-group row">
                                         <label
                                             for="simplify_tolerance"
@@ -1055,7 +1051,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
                         <button
@@ -1085,9 +1081,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" data-i18n="loadNogos.title">Load no-go areas</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="loadNogosForm" id="loadNogosForm">
@@ -1175,7 +1169,7 @@
                     <div class="modal-footer">
                         <p id="nogoError" class="invalid-feedback" style="display: none"></p>
 
-                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" data-i18n="modal.close" data-bs-dismiss="modal">
                             Close
                         </button>
 
@@ -1208,11 +1202,6 @@
                             }'
                             title="Select layers"
                         >
-                            <!--
-                https://github.com/feathericons/feather/blob/0dc2bf5c9d01759e47485d9498aefc02cac1d845/icons/layers.svg
-                MIT License: https://github.com/feathericons/feather/blob/master/LICENSE
-                modifications: line gap -0.5, stroke-width +0.2
-                -->
                             <svg
                                 class="fa"
                                 width="1em"
@@ -1229,20 +1218,6 @@
                                 <polyline points="2 16 12 21 22 16"></polyline>
                             </svg>
                         </a>
-                    </li>
-                    <li hidden>
-                        <a
-                            href="#tab_itinerary"
-                            role="tab"
-                            data-i18n="[title]sidebar.tab-tooltip"
-                            data-i18n-options='{
-                                "action": "$t(sidebar.itinerary.tooltip)",
-                                "toggleKey": "T",
-                                "switchKey": "$t(keyboard.shift)+T"
-                            }'
-                            title="Show Itinerary"
-                            ><i class="fa fa-map-signs"></i
-                        ></a>
                     </li>
                     <li>
                         <a
@@ -1289,8 +1264,8 @@
                 </ul>
             </div>
 
-            <div class="leaflet-sidebar-flex-row flexgrow">
-                <div id="map" class="leaflet-sidebar-map">
+            <div class="leaflet-sidebar-flex-row flexgrow position-relative">
+                <div id="map" class="leaflet-sidebar-map w-100 h-100">
                     <div id="notification_jar">
                         <div id="message"></div>
                         <div id="whats_new_message"></div>
@@ -1314,27 +1289,6 @@
                             </div>
                             <div class="leaflet-control-layers-separator"></div>
                             <div id="layers-button-group">
-                                <div hidden id="tree-button-group">
-                                    <button
-                                        type="button"
-                                        id="expand_tree_button"
-                                        class="btn btn-light btn-sm"
-                                        data-i18n="[title]sidebar.layers.expand"
-                                        title="Expand all"
-                                    >
-                                        <span class="fa fa-plus-square-o"></span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        id="collapse_tree_button"
-                                        class="btn btn-light btn-sm"
-                                        data-i18n="[title]sidebar.layers.collapse"
-                                        title="Collapse all"
-                                    >
-                                        <span class="fa fa-minus-square-o"></span>
-                                    </button>
-                                </div>
-                                <!-- empty dummy to keep following buttons right-aligned when previous hidden -->
                                 <div></div>
                                 <div>
                                     <button
@@ -1359,10 +1313,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <div hidden id="optional-layers">
-                                <div class="help-block" data-i18n="sidebar.layers.optional"></div>
-                                <div id="optional-layers-tree"></div>
-                            </div>
                         </div>
 
                         <div class="leaflet-sidebar-pane" id="tab_profile">
@@ -1378,7 +1328,7 @@
                                         <a
                                             class="nav-link active"
                                             id="params-tab"
-                                            data-toggle="tab"
+                                            data-bs-toggle="tab"
                                             href="#profile_params_container"
                                             role="tab"
                                             aria-controls="profile_params_container"
@@ -1391,7 +1341,7 @@
                                         <a
                                             class="nav-link"
                                             id="profile-editor-tab"
-                                            data-toggle="tab"
+                                            data-bs-toggle="tab"
                                             href="#profile_editor"
                                             role="tab"
                                             aria-controls="profile_editor"
@@ -1472,17 +1422,6 @@
                             <table id="datatable" class="mini cell-border hover stripe"></table>
                         </div>
 
-                        <div class="leaflet-sidebar-pane" id="tab_itinerary">
-                            <h1 class="leaflet-sidebar-header">
-                                <span data-i18n="sidebar.itinerary.title">Itinerary</span
-                                ><span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span
-                                ><span class="d-none d-md-block leaflet-sidebar-expand"
-                                    ><i class="fa fa-expand"></i
-                                ></span>
-                            </h1>
-                            <div id="itinerary" class="flexcolumn flexgrow"></div>
-                        </div>
-
                         <div class="leaflet-sidebar-pane" id="tab_analysis">
                             <h1 class="leaflet-sidebar-header">
                                 <span data-i18n="sidebar.analysis.title">Analysis</span>
@@ -1501,107 +1440,29 @@
             >
         </div>
 
-        <footer class="flexrow">
-            <div id="stats-info" class="flexgrow">
+        <footer class="flexrow bg-dark text-light p-2">
+            <div id="stats-info" class="flexgrow small">
                 <div>
                     <span class="fa fa-info-circle"></span>
                     <span data-i18n="footer.stats-info">Start drawing a route to get stats.</span>
                 </div>
             </div>
-            <div id="stats-container" class="flexrow flexgrow">
-                <ul id="stats">
-                    <li id="beeline-warning" hidden>
-                        <div class="text-muted small d-none d-md-block">&#8239;</div>
-                        <p class="stats-label">
-                            <abbr
-                                class="fa fa-exclamation-triangle"
-                                data-i18n="[title]footer.beeline-warning"
-                                title="Warning: no data for straight lines, values interpolated"
-                            ></abbr>
-                        </p>
-                    </li>
-                    <li>
-                        <div class="text-muted small d-none d-md-block" data-i18n="footer.distance">Distance</div>
-                        <p class="stats-label">
-                            <span id="distance">-</span>&#8239;<abbr
-                                data-i18n="[title]footer.kilometer;footer.kilometer-abbrev"
-                                title="kilometers"
-                                >km</abbr
-                            >
-                        </p>
-                    </li>
-                    <li>
-                        <div class="text-muted small d-none d-md-block" data-i18n="footer.travel-time">Travel time</div>
-                        <p class="stats-label">
-                            <span id="totaltime">-</span>&#8239;<abbr
-                                data-i18n="[title]footer.hours;footer.hours-abbrev"
-                                title="hours"
-                                >h</abbr
-                            >
-                        </p>
-                    </li>
-                    <li>
-                        <div class="text-muted small d-none d-md-block">
-                            <span data-i18n="footer.total-energy">Total Energy</span>&#8239;|&#8239;<span
-                                data-i18n="footer.energy-per-100km"
-                                >Energy per 100 km</span
-                            >
-                        </div>
-                        <p class="stats-label">
-                            <span id="totalenergy">-</span><span class="d-none d-md-inline">&#8239;</span
-                            ><abbr
-                                class="d-none d-md-inline"
-                                data-i18n="[title]footer.kilowatthour;footer.kilowatthour-abbrev"
-                                title="kilowatt hours"
-                                >kWh</abbr
-                            >&#8239;|&#8239;<span id="meanenergy">-</span>&#8239;<abbr
-                                data-i18n="[title]footer.kilowatthour;footer.kilowatthour-abbrev"
-                                title="kilowatt hours"
-                                >kWh</abbr
-                            >
-                        </p>
-                    </li>
-                    <li>
-                        <div class="text-muted small d-none d-md-block">
-                            <span data-i18n="footer.ascend">Ascend</span>&#8239;|&#8239;<span
-                                data-i18n="footer.plain-ascend"
-                                >Plain ascend</span
-                            >
-                        </div>
-                        <p class="stats-label">
-                            <span id="ascend">-</span><span class="d-none d-md-inline">&#8239;</span
-                            ><abbr
-                                class="d-none d-md-inline"
-                                data-i18n="[title]footer.meter;footer.meter-abbrev"
-                                title="meters"
-                                >m</abbr
-                            >&#8239;|&#8239;<span id="plainascend">-</span>&#8239;<abbr
-                                data-i18n="[title]footer.meter;footer.meter-abbrev"
-                                title="meters"
-                                >m</abbr
-                            >
-                        </p>
-                    </li>
-                    <li>
-                        <div class="text-muted small d-none d-md-block">
-                            <span data-i18n="footer.cost">Cost</span>&#8239;|&#8239;<span
-                                data-i18n="footer.mean-cost-factor"
-                                >Mean cost factor</span
-                            >
-                        </div>
-                        <p class="stats-label">
-                            <span id="cost">-</span>&#8239;|&#8239;<span id="meancostfactor">-</span>
-                        </p>
-                    </li>
-                </ul>
+            <div id="stats-container" class="flexrow flexgrow d-flex gap-3 small">
+                <div class="d-flex align-items-center">
+                    <span data-i18n="footer.distance" class="text-secondary me-1">Distance:</span>
+                    <span id="distance">-</span> km
+                </div>
+                <div class="d-flex align-items-center">
+                    <span data-i18n="footer.travel-time" class="text-secondary me-1">Time:</span>
+                    <span id="totaltime">-</span> h
+                </div>
             </div>
 
             <button
                 class="btn btn-outline-secondary btn-sm"
                 type="button"
-                data-toggle="collapse"
-                data-target="#elevation-chart"
-                aria-controls="elevation-chart"
+                data-bs-toggle="collapse"
+                data-bs-target="#elevation-chart"
                 id="elevation-btn"
                 aria-expanded="false"
                 aria-label="Toggle elevation chart"
@@ -1613,19 +1474,24 @@
             </button>
         </footer>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+
         <script>
-            // global package prefix for BRouter web application
             BR = {};
             BR.version = '0.18.1';
 
-            console.log(
-                '\r\n###\r\n###  BRouter-Web\r\n###\r\n###  Please note that the routing API used here is not public!\r\n###\r\n'
-            );
+            document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+                const html = document.documentElement;
+                const currentTheme = html.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-bs-theme', newTheme);
+                document.getElementById('dark-mode-toggle').querySelector('i').className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            });
         </script>
 
         <script src="dist/core-js-bundle.min.js"></script>
         <script src="dist/regenerator-runtime.js"></script>
-        <!-- <script src="dist/url-search-params.js"></script> -->
         <script src="config.js"></script>
         <script src="keys.js"></script>
         <script src="dist/changelog.js"></script>
@@ -1633,7 +1499,6 @@
         <script src="dist/layersConf.js"></script>
         <script src="dist/turf.min.js"></script>
 
-        <!-- "gulp inject" for debugging -->
         <!-- inject:js -->
         <script src="dist/brouter-web.js"></script>
         <!-- endinject -->

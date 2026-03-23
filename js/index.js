@@ -44,110 +44,39 @@
             windowPadding: [0, 0, 40, 0],
         });
 
-        search = new BR.Search();
-        map.addControl(search);
-        $('#map .leaflet-control-geocoder > button')[0].title = i18next.t('keyboard.generic-shortcut', {
-            action: '$t(map.geocoder)',
-            key: 'F',
-        });
+        search = {
+            clear: () => {},
+            addTo: () => {}
+        };
+        // map.addControl(search);
 
         router = L.bRouter(); //brouterCgi dummyRouter
 
-        drawButton = L.easyButton({
-            states: [
-                {
-                    stateName: 'deactivate-draw',
-                    icon: 'fa-pencil active',
-                    onClick(control) {
-                        routing.draw(false);
-                        control.state('activate-draw');
-                    },
-                    title: i18next.t('keyboard.generic-shortcut', {
-                        action: '$t(map.draw-route-stop)',
-                        key: '$t(keyboard.escape)',
-                    }),
-                },
-                {
-                    stateName: 'activate-draw',
-                    icon: 'fa-pencil',
-                    onClick(control) {
-                        routing.draw(true);
-                        control.state('deactivate-draw');
-                    },
-                    title: i18next.t('keyboard.generic-shortcut', {
-                        action: '$t(map.draw-route-start)',
-                        key: 'D',
-                    }),
-                },
-            ],
-        });
-
-        // https://github.com/Templarian/MaterialDesign/blob/d0b28330af6648ca4c50c14d55043d71f813b3ae/svg/vector-line.svg
-        // Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0), https://github.com/Templarian/MaterialDesign/blob/master/LICENSE
-        const svg = `
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                id="mdi-vector-line" width="24" height="24" viewBox="0 0 24 24" class="mdi active">
-                <path d="M15,3V7.59L7.59,15H3V21H9V16.42L16.42,9H21V3M17,5H19V7H17M5,17H7V19H5" />
-            </svg>`;
-        const beelineClickHandler = function (control) {
-            const enabled = routing.toggleBeelineDrawing();
-            control.state(enabled ? 'deactivate-beeline' : 'activate-beeline');
+        drawButton = {
+            state: () => {},
+            enable: () => {},
+            disable: () => {},
+            addTo: () => {}
         };
-        const title = i18next.t('keyboard.generic-shortcut', {
-            action: '$t(map.toggle-beeline)',
-            key: 'B',
-        });
-        const beelineButton = L.easyButton({
-            states: [
-                {
-                    stateName: 'activate-beeline',
-                    icon: svg.replace(' active', ''),
-                    onClick: beelineClickHandler,
-                    title,
-                },
-                {
-                    stateName: 'deactivate-beeline',
-                    icon: svg,
-                    onClick: beelineClickHandler,
-                    title,
-                },
-            ],
-        });
-        map.on('routing:beeline-start', () => beelineButton.state('deactivate-beeline'));
-        map.on('routing:beeline-end', () => beelineButton.state('activate-beeline'));
 
-        var reverseRouteButton = L.easyButton(
-            'fa-random',
-            function () {
-                routing.reverse();
-            },
-            i18next.t('keyboard.generic-shortcut', {
-                action: '$t(map.reverse-route)',
-                key: 'R',
-            })
-        );
+        beelineButton = {
+            state: () => {},
+            enable: () => {},
+            disable: () => {},
+            addTo: () => {}
+        };
 
-        var deletePointButton = L.easyButton(
-            '<span><i class="fa fa-caret-left"></i><i class="fa fa-map-marker" style="margin-left: 1px; color: gray;"></i></span>',
-            function () {
-                routing.deleteLastPoint();
-            },
-            i18next.t('keyboard.generic-shortcut', {
-                action: '$t(map.delete-last-point)',
-                key: 'Z',
-            })
-        );
+        var reverseRouteButton = {
+            addTo: () => {}
+        };
 
-        deleteRouteButton = L.easyButton(
-            'fa-trash-o',
-            function () {
-                clearRoute();
-            },
-            i18next.t('keyboard.generic-shortcut', {
-                action: '$t(map.clear-route)',
-                key: '$t(keyboard.backspace)',
-            })
-        );
+        var deletePointButton = {
+            addTo: () => {}
+        };
+
+        deleteRouteButton = {
+            addTo: () => {}
+        };
 
         L.DomEvent.addListener(
             document,
@@ -391,11 +320,11 @@
             circlego.addTo(map);
         }
 
-        var buttons = [drawButton, beelineButton, reverseRouteButton, nogos.getButton()];
-        if (circlego) buttons.push(circlego.getButton());
-        buttons.push(deletePointButton, deleteRouteButton);
+        // var buttons = [drawButton, beelineButton, reverseRouteButton, nogos.getButton()];
+        // if (circlego) buttons.push(circlego.getButton());
+        // buttons.push(deletePointButton, deleteRouteButton);
 
-        L.easyBar(buttons).addTo(map);
+        // L.easyBar(buttons).addTo(map);
         nogos.preventRoutePointOnCreate(routing);
 
         if (BR.keys.strava) {

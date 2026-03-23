@@ -1,171 +1,68 @@
 BR.Map = {
     initMap() {
-        var map, layersControl;
-
-        L.setOptions(this, {
-            shortcut: {
-                locate: 76, // char code for 'l'
-            },
-        });
+        var map;
 
         BR.keys = BR.keys || {};
 
-        var maxZoom = 19;
-
-        if (BR.Browser.touch) {
-            L.Draggable.prototype.options.clickTolerance = 10;
-        }
-
-        map = new L.Map('map', {
-            zoomControl: false, // add it manually so that we can translate it
-            worldCopyJump: true,
-            minZoom: 0,
-            maxZoom,
+        // Initialize MapLibre GL JS
+        map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://tiles.openfreemap.org/styles/liberty',
+            center: BR.conf.initialMapLocation ? [BR.conf.initialMapLocation[1], BR.conf.initialMapLocation[0]] : [9.86, 50.99],
+            zoom: BR.conf.initialMapZoom || 5,
+            hash: true
         });
 
-        if (BR.Util.getResponsiveBreakpoint() >= '3md') {
-            L.control
-                .zoom({
-                    zoomInTitle: i18next.t('keyboard.generic-shortcut', { action: '$t(map.zoomInTitle)', key: '+' }),
-                    zoomOutTitle: i18next.t('keyboard.generic-shortcut', { action: '$t(map.zoomOutTitle)', key: '-' }),
-                })
-                .addTo(map);
-        }
-        if (!map.restoreView()) {
-            map.setView(BR.conf.initialMapLocation || [50.99, 9.86], BR.conf.initialMapZoom || 5);
-        }
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+        map.addControl(new maplibregl.GeolocateControl({
+            positionOptions: { enableHighAccuracy: true },
+            trackUserLocation: true
+        }), 'top-right');
+        map.addControl(new maplibregl.ScaleControl(), 'bottom-left');
 
-        // two attribution lines by adding two controls, prevents ugly wrapping on
-        // small screens, better separates static from layer-specific attribution
-        var osmAttribution =
-            $(map.getContainer()).outerWidth() >= 400
-                ? i18next.t('map.attribution-osm-long')
-                : i18next.t('map.attribution-osm-short');
-        var privacyPolicyUrl = BR.conf.privacyPolicyUrl || 'https://brouter.de/privacypolicy.html';
-        map.attributionControl.setPrefix(
-            '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">' +
-                osmAttribution +
-                '</a>' +
-                ' &middot; <a href="" data-toggle="modal" data-target="#credits">' +
-                i18next.t('map.copyright') +
-                '</a>' +
-                ' &middot; <a target="_blank" href="' +
-                privacyPolicyUrl +
-                '">' +
-                i18next.t('map.privacy') +
-                '</a>'
-        );
+        // Leaflet compatibility shims for BR components
+        map.on = map.on.bind(map);
+        map.off = map.off.bind(map);
+        map.fire = (type, data) => map.getContainer().dispatchEvent(new CustomEvent(type, { detail: data }));
 
-        $('#credits').on('show.bs.modal', function (event) {
-            BR.Map._renderLayerCredits(layersControl._layers);
-            const overpassUrl = new URL(BR.conf.overpassBaseUrl || 'https://overpass-api.de').origin;
-            for (const link of document.getElementsByClassName('overpass-url')) {
-                link.href = overpassUrl;
+        map.addLayerOrig = map.addLayer;
+        map.addLayer = function(layer) {
+            if (layer.addTo) {
+                layer.addTo(this);
+            } else if (typeof layer === 'object' && layer.id) {
+                this.addLayerOrig(layer);
             }
-        });
+            return this;
+        };
 
-        new L.Control.PermalinkAttribution().addTo(map);
-        map.attributionControl.setPrefix(false);
-
-        var layersConfig = BR.layersConfig(map);
-        var baseLayers = layersConfig.getBaseLayers();
-        var overlays = layersConfig.getOverlays();
-
-        if (BR.keys.bing) {
-            baseLayers[i18next.t('map.layer.bing')] = new BR.BingLayer(BR.keys.bing);
-        }
-
-        if (BR.keys.digitalGlobe) {
-            var recent = new L.tileLayer(
-                'https://{s}.tiles.mapbox.com/v4/digitalglobe.nal0g75k/{z}/{x}/{y}.png?access_token=' +
-                    BR.keys.digitalGlobe,
-                {
-                    minZoom: 1,
-                    maxZoom: 19,
-                    attribution:
-                        '&copy; <a href="https://www.digitalglobe.com/platforms/mapsapi">DigitalGlobe</a> (<a href="https://bit.ly/mapsapiview">Terms of Use</a>)',
-                }
-            );
-            baseLayers[i18next.t('map.layer.digitalglobe')] = recent;
-        }
-
-        if (BR.conf.clearBaseLayers) {
-            baseLayers = {};
-        }
-        for (i in BR.conf.baseLayers) {
-            if (BR.conf.baseLayers.hasOwnProperty(i)) {
-                baseLayers[i] = L.tileLayer(BR.conf.baseLayers[i]);
+        map.removeLayerOrig = map.removeLayer;
+        map.removeLayer = function(layer) {
+            if (layer.onRemove) {
+                layer.onRemove(this);
+            } else if (typeof layer === 'string') {
+                this.removeLayerOrig(layer);
+            } else if (layer.id) {
+                this.removeLayerOrig(layer.id);
             }
-        }
+            return this;
+        };
 
-        for (i in BR.conf.overlays) {
-            if (BR.conf.overlays.hasOwnProperty(i)) {
-                overlays[i] = L.tileLayer(BR.conf.overlays[i]);
-            }
-        }
-
-        layersControl = BR.layersTab(layersConfig, baseLayers, overlays).addTo(map);
-
-        var secureContext = 'isSecureContext' in window ? isSecureContext : location.protocol === 'https:';
-        if (secureContext) {
-            var locationControl = L.control
-                .locate({
-                    strings: {
-                        title: i18next.t('keyboard.generic-shortcut', { action: '$t(map.locate-me)', key: 'L' }),
-                    },
-                    icon: 'fa fa-location-arrow',
-                    iconLoading: 'fa fa-spinner fa-pulse',
-                })
-                .addTo(map);
-            L.DomEvent.addListener(
-                document,
-                'keydown',
-                function (e) {
-                    if (BR.Util.keyboardShortcutsAllowed(e) && e.keyCode === this.options.shortcut.locate) {
-                        if (locationControl._active) {
-                            locationControl.stop();
-                            return;
-                        }
-                        locationControl.start();
-                    }
-                },
-                this
-            );
-        }
-
-        L.control.scale().addTo(map);
-
-        new BR.Layers().init(map, layersControl, baseLayers, overlays);
-
-        // expose map instance for console debugging
         BR.debug = BR.debug || {};
         BR.debug.map = map;
 
+        // Simplified layersControl shim
+        const layersControl = {
+            addBaseLayer: () => {},
+            addOverlay: () => {},
+            removeLayer: () => {},
+            activateDefaultBaseLayer: () => {},
+            loadActiveLayers: () => {},
+            _layers: []
+        };
+
         return {
             map,
-            layersControl,
+            layersControl
         };
-    },
-
-    _renderLayerCredits(layers) {
-        var dl = document.getElementById('credits-maps');
-        var i, obj, dt, dd, attribution;
-
-        L.DomUtil.empty(dl);
-
-        for (i = 0; i < layers.length; i++) {
-            obj = layers[i];
-            attribution = obj.layer.options.attribution;
-
-            if (attribution) {
-                dt = document.createElement('dt');
-                dt.innerHTML = obj.name;
-                dd = document.createElement('dd');
-                dd.innerHTML = obj.layer.options.attribution;
-
-                dl.appendChild(dt);
-                dl.appendChild(dd);
-            }
-        }
-    },
+    }
 };

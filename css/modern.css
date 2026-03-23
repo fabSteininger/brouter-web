@@ -1,0 +1,45 @@
+
+/* Modern theme enhancements */
+[data-bs-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#map {
+    width: 100%;
+    height: calc(100vh - 56px);
+}
+
+.navbar {
+    z-index: 1000;
+}
+
+/* Mobile responsive sidebar */
+@media (max-width: 768px) {
+    .leaflet-sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #sidebarTabs {
+        display: none;
+    }
+}
+
+/* Increase touch targets for mobile */
+.btn-sm, .nav-link, .leaflet-bar a {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dark mode toggle icon styling */
+#dark-mode-toggle {
+    cursor: pointer;
+}
