@@ -4,8 +4,9 @@
 
 BR = {};
 $ = require('jquery');
+global.jQuery = $;
 i18next = require('i18next');
-require('bootstrap');
+global.bootstrap = require('bootstrap');
 require('bootstrap-select');
 require('leaflet');
 
