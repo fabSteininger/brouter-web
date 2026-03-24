@@ -1,11 +1,11 @@
 FROM node:lts as build
-RUN mkdir /tmp/brouter-web
-WORKDIR /tmp/brouter-web
+WORKDIR /app
 COPY . .
 RUN yarn install
 RUN yarn run build
 
 FROM nginx:alpine
-COPY --from=build /tmp/brouter-web/index.html /usr/share/nginx/html
-COPY --from=build /tmp/brouter-web/dist /usr/share/nginx/html/dist
+COPY --from=build /app/index.html /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html/dist
+COPY --from=build /app/css /usr/share/nginx/html/css
 VOLUME [ "/usr/share/nginx/html" ]
