@@ -13,6 +13,23 @@ services:
             - ./:/src
         working_dir: /src
 
+    brouter:
+        image: ghcr.io/abrensch/brouter:latest
+        ports:
+            - '17777:17777'
+        volumes:
+            - ./segments4:/segments4
+
+    brouter-web:
+        build: .
+        ports:
+            - '8080:80'
+        volumes:
+            - ./config.template.js:/usr/share/nginx/html/config.js
+            - ./keys.template.js:/usr/share/nginx/html/keys.js
+        depends_on:
+            - brouter
+
     ## usage: docker-compose run --rm install
     install:
         command: yarn install
